@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Eventable by develephant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Eventable</h1>
+      <h2 class="project-tagline">A series of tubes for Lua tables.</h2>
+      <a href="https://github.com/develephant/Eventable" class="btn">View on GitHub</a>
+      <a href="https://github.com/develephant/Eventable/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/develephant/Eventable/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="eventable" class="anchor" href="#eventable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable</h1>
+
+<p><em>A series of tubes for Lua tables.</em></p>
+
+<p><strong>Eventable</strong> lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too. It's basically a chat room for your tables and mods.</p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>Put the <code>Eventable.lua</code> somewhere in your project, and require it where ever you need it</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-c">--== main.lua ==--</span>
+<span class="pl-k">local</span> Eventable <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>For a table to be part of the <strong>Eventable</strong> messaging loop, it must be <em>evented</em> like so:</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">--== evented table</span>
+<span class="pl-k">local</span> tbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()</pre></div>
+
+<p>You now have a table that is also part of the <strong>Eventable</strong> messaging network.</p>
+
+<p>As long as you don't use any of the <strong>Eventable</strong> method names (see below), you can pass in any starting data table.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> starter_tbl <span class="pl-k">=</span> { username <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Fred<span class="pl-pds">"</span></span>, age <span class="pl-k">=</span> <span class="pl-c1">55</span> }
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> Eventable:<span class="pl-c1">new</span>( starter_tbl )</pre></div>
+
+<p><strong>Listening for events in the network.</strong></p>
+
+<div class="highlight highlight-lua"><pre>
+<span class="pl-c">--== Listening for 'tweet' event</span>
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>tweet<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, message </span>)
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>The <span class="pl-pds">'</span></span><span class="pl-k">..</span>evt.<span class="pl-smi">name</span><span class="pl-k">..</span><span class="pl-s"><span class="pl-pds">'</span> was <span class="pl-pds">'</span></span><span class="pl-k">..</span>message )
+<span class="pl-k">end</span>)
+
+<span class="pl-c">--== Sending</span>
+<span class="pl-k">local</span> starter_tbl <span class="pl-k">=</span> { greeting <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Hello!<span class="pl-pds">"</span></span> }
+<span class="pl-k">local</span> etbl2 <span class="pl-k">=</span> et:<span class="pl-c1">new</span>( starter_tbl ) <span class="pl-c">--wrap it</span>
+
+etbl2:<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>tweet<span class="pl-pds">'</span></span>, <span class="pl-v">self</span>.<span class="pl-smi">greeting</span> )</pre></div>
+
+<blockquote>
+<p><code>--&gt; The tweet was Hello!</code></p>
+</blockquote>
+
+<p><strong>Listening for events once.</strong></p>
+
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">once</span>( <span class="pl-s"><span class="pl-pds">'</span>tweet<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, message </span>)
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>tweet: <span class="pl-pds">'</span></span> <span class="pl-k">..</span> message )
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>bye tweety!<span class="pl-pds">'</span></span>)
+<span class="pl-k">end</span>)</pre></div>
+
+<blockquote>
+<p><code>--&gt; tweet Goodbye!</code></p>
+
+<p><code>--&gt; bye tweety!</code></p>
+</blockquote>
+
+<p>The event callback will trigger one time, and never again, unless you re-register the <code>on</code> handler.</p>
+
+<p><strong>Sending events through the network.</strong></p>
+
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>my-event<span class="pl-pds">'</span></span>, someval, otherval, alotofvals )</pre></div>
+
+<p>After specifying an event name, you can pass as many arguments as you need, comma separated.</p>
+
+<blockquote>
+<p><strong>Any <em>evented</em> table can opt-in to listening to any event from any other <em>evented</em> table.</strong></p>
+</blockquote>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">--Create some new evented tables</span>
+<span class="pl-k">local</span> cook <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+<span class="pl-k">local</span> waiter <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+
+<span class="pl-c">--Cook waits for order</span>
+cook:<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>order<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, food </span>)
+  <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">'</span>Now cooking<span class="pl-pds">'</span></span><span class="pl-k">..</span>food)
+  <span class="pl-c">-- ...</span>
+  <span class="pl-v">self</span>:<span class="pl-c1">emit</span>( <span class="pl-s"><span class="pl-pds">'</span>order-up<span class="pl-pds">'</span></span>, food )
+<span class="pl-k">end</span>)
+
+<span class="pl-c">--Waiter listens for order</span>
+waiter:<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>order-up<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, food </span>)
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>Your <span class="pl-pds">'</span></span> <span class="pl-k">..</span> food <span class="pl-k">..</span> <span class="pl-s"><span class="pl-pds">'</span> are served.<span class="pl-pds">'</span></span>)
+<span class="pl-k">end</span>)
+
+<span class="pl-c">--Waiter places order</span>
+waiter:<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>order<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Pancakes<span class="pl-pds">'</span></span>)</pre></div>
+
+<blockquote>
+<p><code>--&gt; Now cooking Pancakes</code></p>
+
+<p><code>--&gt; Your Panackes are served</code></p>
+</blockquote>
+
+<h3>
+<a id="communication-through-modules" class="anchor" href="#communication-through-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Communication through modules.</h3>
+
+<p>In this example, the first two modules are listening for a <em>greeting</em> event. The third module <code>emits</code> the event. You might also notice the use of the <code>once</code> method, instead of the more common <code>on</code>. Usually once your greeted, you don't need to be re-greeted. So here <code>once</code> makes sense.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-c">--== mod_one.lua ==--</span>
+<span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+<span class="pl-k">local</span> mod <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+
+mod:<span class="pl-c1">once</span>(<span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, message </span>)
+  <span class="pl-c1">print</span>( message )
+<span class="pl-k">end</span>)
+
+<span class="pl-k">return</span> mod</pre></div>
+
+<div class="highlight highlight-lua"><pre><span class="pl-c">--== mod_two.lua ==--</span>
+<span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+<span class="pl-k">local</span> mod <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+
+mod:<span class="pl-c1">once</span>(<span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, message </span>)
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>this is my greeting: <span class="pl-pds">'</span></span> <span class="pl-k">..</span> message )
+<span class="pl-k">end</span>)
+
+<span class="pl-k">return</span> mod</pre></div>
+
+<div class="highlight highlight-lua"><pre><span class="pl-c">--== mod_three.lua ==--</span>
+<span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+<span class="pl-k">local</span> mod <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+
+mod:<span class="pl-c1">emit</span>( <span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Hello!<span class="pl-pds">'</span></span> )
+
+<span class="pl-k">return</span> mod</pre></div>
+
+<blockquote>
+<p><code>--&gt; Hello!</code></p>
+
+<p><code>--&gt; this is my greeting: Hello!</code></p>
+</blockquote>
+
+<h3>
+<a id="managing-your-listening-options" class="anchor" href="#managing-your-listening-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Managing your listening options.</h3>
+
+<p><strong>Stop listening for a certain event. Other events are unaffected.</strong></p>
+
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">off</span>( <span class="pl-s"><span class="pl-pds">'</span>tweet<span class="pl-pds">'</span></span> )</pre></div>
+
+<p><strong>Stop listening for any and all events.</strong></p>
+
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">allOff</span>()</pre></div>
+
+<blockquote>
+<p><strong>Once you release events using <code>off</code> or <code>allOff</code>, you will need to re-register your <code>on</code> handler again. You can also use <code>mute</code>, which does not remove your events, as shown below.</strong></p>
+</blockquote>
+
+<p><strong>Temporary silencing of all events. Events are not released.</strong></p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-c">-- Mute all events</span>
+etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">true</span> )
+
+<span class="pl-c">-- Listen to all events again</span>
+etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">false</span> )</pre></div>
+
+<p><strong>Check if table listening is muted.</strong></p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> trueOrFalse <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
+
+<h2>
+<a id="eventable-static-methods" class="anchor" href="#eventable-static-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable static methods</h2>
+
+<p>Print a table into human readable form.</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">p</span>( tbl )</pre></div>
+
+<p>To get a count of all the <em>evented</em> tables.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> count <span class="pl-k">=</span> Eventable.<span class="pl-c1">count</span>()</pre></div>
+
+<p>Print all event names active to the terminal. (needs work)</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">list</span>()</pre></div>
+
+<p>Release a table from <strong>Eventable</strong> messaging loop. You cannot reattach after this action. You must create a new instance. Generally, you shouldn't need to use this action.</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">release</span>( etbl )</pre></div>
+
+<h1>
+<a id="eventable-api" class="anchor" href="#eventable-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable API</h1>
+
+<p>The following methods are available on any <em>evented</em> table. Please do not overwrite them.</p>
+
+<p>You can call methods directly on the <em>evented</em> table object, or through using <code>self</code> internally.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>party<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>tonight<span class="pl-pds">'</span></span>)</pre></div>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-smi">goParty</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">when</span>)
+  <span class="pl-v">self</span>:<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>party<span class="pl-pds">'</span></span>, when)
+<span class="pl-k">end</span>
+etbl:<span class="pl-c1">goParty</span>(<span class="pl-s"><span class="pl-pds">'</span>tonight<span class="pl-pds">'</span></span>)</pre></div>
+
+<h2>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<h3>
+<a id="newstarting_table" class="anchor" href="#newstarting_table" aria-hidden="true"><span class="octicon octicon-link"></span></a>:new([starting_table])</h3>
+
+<p>Creates a fresh <em>evented</em> table. This table can message with other  <em>evented</em> tables and mods. Can optionally take a <code>starting_table</code> that will become 'wrapped' into an <em>evented</em> table.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+<span class="pl-c">-- or</span>
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>( { username <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Bob<span class="pl-pds">"</span></span> } )</pre></div>
+
+<hr>
+
+<h3>
+<a id="emit-event_name--" class="anchor" href="#emit-event_name--" aria-hidden="true"><span class="octicon octicon-link"></span></a>:emit( event_name, ... )</h3>
+
+<p>Broadcast data parameters to any other <em>evented</em> tables listening for this <code>event_name</code>.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">emit</span>( <span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Good Day!<span class="pl-pds">'</span></span>)</pre></div>
+
+<hr>
+
+<h3>
+<a id="on-event_name-callback-" class="anchor" href="#on-event_name-callback-" aria-hidden="true"><span class="octicon octicon-link"></span></a>:on( event_name, callback )</h3>
+
+<p>Listens for a specific event name to be emitted, and take action with the callback. The callback will return an <code>event</code> object and any other arguments available.</p>
+
+<p>In the <code>event</code> object you can find the event <code>name</code> and <code>target</code> key, which points to the table that triggered this event.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> evt, message </span>)
+  <span class="pl-c1">print</span>( message )
+<span class="pl-k">end</span>)</pre></div>
+
+<hr>
+
+<h3>
+<a id="once-event_name-callback-" class="anchor" href="#once-event_name-callback-" aria-hidden="true"><span class="octicon octicon-link"></span></a>:once( event_name, callback )</h3>
+
+<p>Listens for a specific <code>event_name</code> to be emitted, and take action with the callback <em>only one time</em>, and no more.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">once</span>(<span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi"> event, message </span>)
+  <span class="pl-c1">print</span>( message )
+  <span class="pl-c1">print</span>( <span class="pl-s"><span class="pl-pds">'</span>Bye bye!<span class="pl-pds">'</span></span>)
+<span class="pl-k">end</span>)</pre></div>
+
+<blockquote>
+<p>Something like a "greeting" is a good candidate for using <code>once</code>, since you only greet someone one time each session.</p>
+</blockquote>
+
+<hr>
+
+<h3>
+<a id="off-event_name-" class="anchor" href="#off-event_name-" aria-hidden="true"><span class="octicon octicon-link"></span></a>:off( event_name )</h3>
+
+<p>Stop listening for the specified <code>event_name</code>. Once a event is turned off, it can only be added as a new <code>on</code> instance. See the <code>mute</code> method for an alternative.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">off</span>( <span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span> )</pre></div>
+
+<blockquote>
+<p>Will no longer listen for the <em>greeting</em> event.</p>
+</blockquote>
+
+<hr>
+
+<h3>
+<a id="alloff" class="anchor" href="#alloff" aria-hidden="true"><span class="octicon octicon-link"></span></a>:allOff()</h3>
+
+<p>Removes all events from the table / mod. This table will only get the 'global' event.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">allOff</span>()</pre></div>
+
+<blockquote>
+<p>Will no longer listen for the <em>any</em> events.</p>
+</blockquote>
+
+<h3>
+<a id="mute-trueorfalse-" class="anchor" href="#mute-trueorfalse-" aria-hidden="true"><span class="octicon octicon-link"></span></a>:mute( trueOrFalse )</h3>
+
+<p>Mutes all event input while enabled. Event listeners are left active unlike <code>off</code> or <code>allOff</code>.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">true</span> ) <span class="pl-c">--no events read</span>
+
+<span class="pl-c">-- or</span>
+
+etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">false</span> ) <span class="pl-c">--read events again</span></pre></div>
+
+<blockquote>
+<p>Toggle mute for all events. But listeners will remain.</p>
+</blockquote>
+
+<h3>
+<a id="ismuted" class="anchor" href="#ismuted" aria-hidden="true"><span class="octicon octicon-link"></span></a>:isMuted()</h3>
+
+<p>Checks whether the <em>evented</em> table is <code>muted</code>. Will return true or false.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
+<span class="pl-k">local</span> is_muted <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/develephant/Eventable">Eventable</a> is maintained by <a href="https://github.com/develephant">develephant</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
