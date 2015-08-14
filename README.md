@@ -174,32 +174,6 @@ __Check if table listening is muted.__
 local trueOrFalse = etbl:isMuted()
 ```
 
-## Eventable static methods
-
-Print a table into human readable form.
-
-```lua
-Eventable.p( tbl )
-```
-
-To get a count of all the _evented_ tables.
-
-```lua
-local count = Eventable.count()
-```
-
-Print all event names active to the terminal. (needs work)
-
-```lua
-Eventable.list()
-```
-
-Release a table from __Eventable__ messaging loop. You cannot reattach after this action. You must create a new instance. Generally, you shouldn't need to use this action.
-
-```lua
-Eventable.release( etbl )
-```
-
 # Eventable API
 
 The following methods are available on any _evented_ table. Please do not overwrite them.
@@ -321,4 +295,30 @@ Checks whether the _evented_ table is `muted`. Will return true or false.
 
 ```lua
 local is_muted = etbl:isMuted()
+```
+
+## Eventable static methods
+
+Print a table into human readable form.
+
+```lua
+Eventable.p( tbl )
+```
+
+To get a count of all the _evented_ tables.
+
+```lua
+local count = Eventable.count()
+```
+
+Print all event names active to the terminal. (needs work)
+
+```lua
+Eventable.list()
+```
+
+Release a table from __Eventable__ messaging loop. You cannot reattach after this action. You must create a new instance. Generally, you shouldn't need to use this action.
+
+```lua
+Eventable.release( etbl )
 ```
