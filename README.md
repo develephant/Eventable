@@ -1,6 +1,6 @@
 # Eventable
 
-_A series of tubes for Lua tables._
+_A Series of Tubes for Lua tables._
 
 __Eventable__ lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too. It's basically a chat room for your tables and mods.
 
@@ -24,9 +24,9 @@ local et = require('Eventable')
 local tbl = et:new()
 ```
 
-You now have a table that is also part of the __Eventable__ messaging network.
+You now have a table that is also part of the __Eventable__ messaging network. Use it as you would any other table. Just be sure not to overwrite any of the __Eventable__ methods (see API below).
 
-As long as you don't use any of the __Eventable__ method names (see below), you can pass in any starting data table.
+As long as you don't use any of the __Eventable__ method names, you can pass in any starting data table.
 
 ```lua
 local starter_tbl = { username = "Fred", age = 55 }
