@@ -1,6 +1,6 @@
 ---Eventable
 -- A series of tubes for tables
--- @version 0.1.0
+-- @version 0.1.2
 -- @author C. Byerley
 -- @copyright 2015 develephant
 -- @license MIT
