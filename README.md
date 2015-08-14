@@ -225,7 +225,7 @@ etbl:goParty('tonight')
 Creates a fresh _evented_ table. This table can message with other  _evented_ tables and mods. Can optionally take a `starting_table` that will become 'wrapped' into an _evented_ table.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 -- or
@@ -239,7 +239,7 @@ local etbl = et:new( { username = "Bob" } )
 Broadcast data parameters to any other _evented_ tables listening for this `event_name`.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:emit( 'greeting', 'Good Day!')
@@ -254,7 +254,7 @@ Listens for a specific event name to be emitted, and take action with the callba
 In the `event` object you can find the event `name` and `target` key, which points to the table that triggered this event.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:on('greeting', function( evt, message )
@@ -269,7 +269,7 @@ end)
 Listens for a specific `event_name` to be emitted, and take action with the callback _only one time_, and no more.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:once('greeting', function( event, message )
@@ -287,7 +287,7 @@ end)
 Stop listening for the specified `event_name`. Once a event is turned off, it can only be added as a new `on` instance. See the `mute` method for an alternative.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:off( 'greeting' )
@@ -301,7 +301,7 @@ etbl:off( 'greeting' )
 Removes all events from the table / mod. This table will only get the 'global' event.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:allOff()
@@ -313,7 +313,7 @@ etbl:allOff()
 Mutes all event input while enabled. Event listeners are left active unlike `off` or `allOff`.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 etbl:mute( true ) --no events read
@@ -329,7 +329,7 @@ etbl:mute( false ) --read events again
 Checks whether the _evented_ table is `muted`. Will return true or false.
 
 ```lua
-local et = require('Eventable.lua')
+local et = require('Eventable')
 
 local etbl = et:new()
 local is_muted = etbl:isMuted()
