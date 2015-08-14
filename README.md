@@ -2,7 +2,7 @@
 
 _A series of tubes for Lua tables._
 
-__Eventable__ lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too.
+__Eventable__ lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too. It's basically a chat room for your tables and mods.
 
 ## Install
 
