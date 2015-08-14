@@ -287,9 +287,6 @@ end)
 Stop listening for the specified `event_name`. Once a event is turned off, it can only be added as a new `on` instance. See the `mute` method for an alternative.
 
 ```lua
-local et = require('Eventable')
-
-local etbl = et:new()
 etbl:off( 'greeting' )
 ```
 > Will no longer listen for the _greeting_ event.
@@ -301,9 +298,6 @@ etbl:off( 'greeting' )
 Removes all events from the table / mod. This table will only get the 'global' event.
 
 ```lua
-local et = require('Eventable')
-
-local etbl = et:new()
 etbl:allOff()
 ```
 > Will no longer listen for the _any_ events.
@@ -313,9 +307,6 @@ etbl:allOff()
 Mutes all event input while enabled. Event listeners are left active unlike `off` or `allOff`.
 
 ```lua
-local et = require('Eventable')
-
-local etbl = et:new()
 etbl:mute( true ) --no events read
 
 -- or
@@ -329,8 +320,5 @@ etbl:mute( false ) --read events again
 Checks whether the _evented_ table is `muted`. Will return true or false.
 
 ```lua
-local et = require('Eventable')
-
-local etbl = et:new()
 local is_muted = etbl:isMuted()
 ```
