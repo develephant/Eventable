@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Eventable</h1>
-      <h2 class="project-tagline">A series of tubes for Lua tables.</h2>
+      <h2 class="project-tagline">A Series of Tubes for Lua tables.</h2>
       <a href="https://github.com/develephant/Eventable" class="btn">View on GitHub</a>
       <a href="https://github.com/develephant/Eventable/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/develephant/Eventable/tarball/master" class="btn">Download .tar.gz</a>
@@ -22,7 +22,7 @@
       <h1>
 <a id="eventable" class="anchor" href="#eventable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable</h1>
 
-<p><em>A series of tubes for Lua tables.</em></p>
+<p><em>A Series of Tubes for Lua tables.</em></p>
 
 <p><strong>Eventable</strong> lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too. It's basically a chat room for your tables and mods.</p>
 
@@ -44,9 +44,9 @@
 <span class="pl-c">--== evented table</span>
 <span class="pl-k">local</span> tbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()</pre></div>
 
-<p>You now have a table that is also part of the <strong>Eventable</strong> messaging network.</p>
+<p>You now have a table that is also part of the <strong>Eventable</strong> messaging network. Use it as you would any other table. Just be sure not to overwrite any of the <strong>Eventable</strong> methods (see API below).</p>
 
-<p>As long as you don't use any of the <strong>Eventable</strong> method names (see below), you can pass in any starting data table.</p>
+<p>As long as you don't use any of the <strong>Eventable</strong> method names, you can pass in any starting data table.</p>
 
 <div class="highlight highlight-lua"><pre><span class="pl-k">local</span> starter_tbl <span class="pl-k">=</span> { username <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Fred<span class="pl-pds">"</span></span>, age <span class="pl-k">=</span> <span class="pl-c1">55</span> }
 <span class="pl-k">local</span> etbl <span class="pl-k">=</span> Eventable:<span class="pl-c1">new</span>( starter_tbl )</pre></div>
@@ -188,25 +188,6 @@ etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">false</span> )</pre></
 
 <div class="highlight highlight-lua"><pre><span class="pl-k">local</span> trueOrFalse <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
 
-<h2>
-<a id="eventable-static-methods" class="anchor" href="#eventable-static-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable static methods</h2>
-
-<p>Print a table into human readable form.</p>
-
-<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">p</span>( tbl )</pre></div>
-
-<p>To get a count of all the <em>evented</em> tables.</p>
-
-<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> count <span class="pl-k">=</span> Eventable.<span class="pl-c1">count</span>()</pre></div>
-
-<p>Print all event names active to the terminal. (needs work)</p>
-
-<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">list</span>()</pre></div>
-
-<p>Release a table from <strong>Eventable</strong> messaging loop. You cannot reattach after this action. You must create a new instance. Generally, you shouldn't need to use this action.</p>
-
-<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">release</span>( etbl )</pre></div>
-
 <h1>
 <a id="eventable-api" class="anchor" href="#eventable-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable API</h1>
 
@@ -302,12 +283,12 @@ etbl:<span class="pl-c1">once</span>(<span class="pl-s"><span class="pl-pds">'</
 <h3>
 <a id="alloff" class="anchor" href="#alloff" aria-hidden="true"><span class="octicon octicon-link"></span></a>:allOff()</h3>
 
-<p>Removes all events from the table / mod. This table will only get the 'global' event.</p>
+<p>Removes all events from the table / mod.</p>
 
 <div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">allOff</span>()</pre></div>
 
 <blockquote>
-<p>Will no longer listen for the <em>any</em> events.</p>
+<p>Will no longer listen for <em>any</em> events.</p>
 </blockquote>
 
 <h3>
@@ -331,6 +312,25 @@ etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">false</span> ) <span c
 <p>Checks whether the <em>evented</em> table is <code>muted</code>. Will return true or false.</p>
 
 <div class="highlight highlight-lua"><pre><span class="pl-k">local</span> is_muted <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
+
+<h2>
+<a id="eventable-static-methods" class="anchor" href="#eventable-static-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eventable static methods</h2>
+
+<p>Print a table into human readable form.</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">p</span>( tbl )</pre></div>
+
+<p>To get a count of all the <em>evented</em> tables.</p>
+
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> count <span class="pl-k">=</span> Eventable.<span class="pl-c1">count</span>()</pre></div>
+
+<p>Print all event names active to the terminal. (needs work)</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">list</span>()</pre></div>
+
+<p>Release a table from <strong>Eventable</strong> messaging loop. You cannot reattach after this action. You must create a new instance. Generally, you shouldn't need to use this action.</p>
+
+<div class="highlight highlight-lua"><pre>Eventable.<span class="pl-c1">release</span>( etbl )</pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/develephant/Eventable">Eventable</a> is maintained by <a href="https://github.com/develephant">develephant</a>.</span>
