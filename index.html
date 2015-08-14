@@ -291,10 +291,7 @@ etbl:<span class="pl-c1">once</span>(<span class="pl-s"><span class="pl-pds">'</
 
 <p>Stop listening for the specified <code>event_name</code>. Once a event is turned off, it can only be added as a new <code>on</code> instance. See the <code>mute</code> method for an alternative.</p>
 
-<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
-
-<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
-etbl:<span class="pl-c1">off</span>( <span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span> )</pre></div>
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">off</span>( <span class="pl-s"><span class="pl-pds">'</span>greeting<span class="pl-pds">'</span></span> )</pre></div>
 
 <blockquote>
 <p>Will no longer listen for the <em>greeting</em> event.</p>
@@ -307,10 +304,7 @@ etbl:<span class="pl-c1">off</span>( <span class="pl-s"><span class="pl-pds">'</
 
 <p>Removes all events from the table / mod. This table will only get the 'global' event.</p>
 
-<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
-
-<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
-etbl:<span class="pl-c1">allOff</span>()</pre></div>
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">allOff</span>()</pre></div>
 
 <blockquote>
 <p>Will no longer listen for the <em>any</em> events.</p>
@@ -321,10 +315,7 @@ etbl:<span class="pl-c1">allOff</span>()</pre></div>
 
 <p>Mutes all event input while enabled. Event listeners are left active unlike <code>off</code> or <code>allOff</code>.</p>
 
-<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
-
-<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
-etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">true</span> ) <span class="pl-c">--no events read</span>
+<div class="highlight highlight-lua"><pre>etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">true</span> ) <span class="pl-c">--no events read</span>
 
 <span class="pl-c">-- or</span>
 
@@ -339,10 +330,7 @@ etbl:<span class="pl-c1">mute</span>( <span class="pl-c1">false</span> ) <span c
 
 <p>Checks whether the <em>evented</em> table is <code>muted</code>. Will return true or false.</p>
 
-<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> et <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Eventable<span class="pl-pds">'</span></span>)
-
-<span class="pl-k">local</span> etbl <span class="pl-k">=</span> et:<span class="pl-c1">new</span>()
-<span class="pl-k">local</span> is_muted <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
+<div class="highlight highlight-lua"><pre><span class="pl-k">local</span> is_muted <span class="pl-k">=</span> etbl:<span class="pl-c1">isMuted</span>()</pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/develephant/Eventable">Eventable</a> is maintained by <a href="https://github.com/develephant">develephant</a>.</span>
