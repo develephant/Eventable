@@ -269,12 +269,12 @@ etbl:off( 'greeting' )
 
 ### :allOff()
 
-Removes all events from the table / mod. This table will only get the 'global' event.
+Removes all events from the table / mod.
 
 ```lua
 etbl:allOff()
 ```
-> Will no longer listen for the _any_ events.
+> Will no longer listen for _any_ events.
 
 ### :mute( trueOrFalse )
 
