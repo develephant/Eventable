@@ -1,6 +1,6 @@
 # Eventable
 
-_A global evented Lua table communication module._
+_A series of tubes for Lua tables._
 
 __Eventable__ lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too.
 
