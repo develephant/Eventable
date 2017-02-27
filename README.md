@@ -306,6 +306,8 @@ Checks whether the _evented_ table is `muted`. Will return true or false.
 local is_muted = etbl:isMuted()
 ```
 
+---
+
 ## Eventable static methods
 
 Print a table into human readable form.

@@ -2,7 +2,7 @@
 -- A series of tubes for tables
 -- @version 0.1.2
 -- @author C. Byerley
--- @copyright 2015 develephant
+-- @copyright 2015-17 develephant.com
 -- @license MIT
 -- @classmod
 local Eventable = {}
@@ -101,6 +101,7 @@ end
 
 ---List all events registered
 -- may include duplicates.
+-- TODO: Make it work.
 Eventable.list = function()
   for _, member in pairs( Eventable._members ) do
     Eventable.p( member._events )
