@@ -1,12 +1,12 @@
 # Eventable
 
-_A Series of Tubes for Lua tables._
+_A Series of Tubes for Lua Tables._
 
 __Eventable__ lightly extends your tables to create a "network" of tables that can listen for, and send events. Works across modules too. It's basically a chat room for your tables and mods.
 
 ## Install
 
-Put the `Eventable.lua` somewhere in your project, and require it where ever you need it
+Put the `Eventable.lua` somewhere in your project, and require it wherever you need it
 
 ```lua
 --== main.lua ==--
@@ -29,16 +29,18 @@ You now have a table that is also part of the __Eventable__ messaging network. U
 As long as you don't use any of the __Eventable__ method names, you can pass in any starting data table.
 
 ```lua
+local et = require('Eventable')
+
 local starter_tbl = { username = "Fred", age = 55 }
-local etbl = Eventable:new( starter_tbl )
+local etbl = et:new( starter_tbl )
 ```
 
 __Listening for events in the network.__
 
 ```lua
+local etbl = et:new()
 
 --== Listening for 'tweet' event
-local etbl = et:new()
 etbl:on('tweet', function( evt, message )
   print( 'The '..evt.name..' was '..message )
 end)
@@ -47,7 +49,7 @@ end)
 local starter_tbl = { greeting = "Hello!" }
 local etbl2 = et:new( starter_tbl ) --wrap it
 
-etbl2:emit('tweet', self.greeting )
+etbl2:emit( 'tweet', etbl2.greeting )
 ```
 
 > `--> The tweet was Hello!`
@@ -99,11 +101,11 @@ waiter:emit('order', 'Pancakes')
 ```
 > `--> Now cooking Pancakes`
 
-> `--> Your Panackes are served`
+> `--> Your Pancakes are served`
 
 ### Communication through modules.
 
-In this example, the first two modules are listening for a _greeting_ event. The third module `emits` the event. You might also notice the use of the `once` method, instead of the more common `on`. Usually once your greeted, you don't need to be re-greeted. So here `once` makes sense.
+In the following example, the first two modules are listening for a _greeting_ event. The third module `emits` the event. You'll also notice the use of the `once` method, instead of `on`. Usually once you're greeted, you don't need to be re-greeted. So here `once` makes more sense.
 
 ```lua
 --== mod_one.lua ==--
@@ -184,6 +186,8 @@ You can call methods directly on the _evented_ table object, or through using `s
 local etbl = et:new()
 etbl:emit('party', 'tonight')
 ```
+_OR..._
+
 ```lua
 local etbl = et:new()
 etbl:goParty = function(when)
@@ -252,8 +256,6 @@ etbl:once('greeting', function( event, message )
 end)
 ```
 
-> Something like a "greeting" is a good candidate for using `once`, since you only greet someone one time each session.
-
 ---
 
 ### :off( event_name )
@@ -263,6 +265,7 @@ Stop listening for the specified `event_name`. Once a event is turned off, it ca
 ```lua
 etbl:off( 'greeting' )
 ```
+
 > Will no longer listen for the _greeting_ event.
 
 ---
@@ -274,7 +277,10 @@ Removes all events from the table / mod.
 ```lua
 etbl:allOff()
 ```
+
 > Will no longer listen for _any_ events.
+
+---
 
 ### :mute( trueOrFalse )
 
@@ -287,7 +293,10 @@ etbl:mute( true ) --no events read
 
 etbl:mute( false ) --read events again
 ```
-> Toggle mute for all events. But listeners will remain.
+
+> Mute all events, but listeners will remain.
+
+---
 
 ### :isMuted()
 
@@ -322,3 +331,5 @@ Release a table from __Eventable__ messaging loop. You cannot reattach after thi
 ```lua
 Eventable.release( etbl )
 ```
+
+(c)2015-2017 develephant.com
